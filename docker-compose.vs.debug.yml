@@ -1,0 +1,17 @@
+#See https://aka.ms/overrideVSDockerComposeConfiguration to understand how Visual Studio uses this override file.
+
+version: '3.4'
+
+services:
+  masstransitsaga:
+      environment:
+          DatabaseSettings__Host: "host.docker.internal"
+      #     Urls: "http://0.0.0.0:3100"
+      # ports:
+      #     - "3100:3100"
+  
+    #labels:
+      #com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: "\"/app/bin/Debug/net8.0/WalletServer.dll\""
+      #com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      #com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
