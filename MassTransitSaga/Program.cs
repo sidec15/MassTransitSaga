@@ -45,27 +45,41 @@ services.AddMassTransit(configurator =>
   //{
   //  config.ConfigureEndpoints(context);
   //});
-  configurator.UsingPostgres((context, cfg) =>
+
+  //configurator.UsingPostgres((context, cfg) =>
+  //{
+  //  cfg.UseDbMessageScheduler();
+
+  //  cfg.ConfigureEndpoints(context);
+  //  //cfg.UseMessageRetry(r =>
+  //  //{
+  //  //  r.Exponential(retryLimit: 5,                          // Number of retry attempts
+  //  //                minInterval: TimeSpan.FromSeconds(1),   // Minimum time to wait between retries
+  //  //                maxInterval: TimeSpan.FromMinutes(2),   // Maximum time to wait between retries
+  //  //                intervalDelta: TimeSpan.FromSeconds(0)  // Time added to the wait each retry
+  //  //  );
+  //  //  //r.Immediate(2);
+  //  //});
+  //  // Fallback configuration
+
+  //});
+
+  configurator.UsingRabbitMq((context, cfg) =>
   {
-    cfg.UseDbMessageScheduler();
+    cfg.Host(new Uri(builder.Configuration["MessageBroker:Host"]), h =>
+    {
+      h.Username(builder.Configuration["MessageBroker:Username"]);
+      h.Password(builder.Configuration["MessageBroker:Password"]);
+    });
 
     cfg.ConfigureEndpoints(context);
-    //cfg.UseMessageRetry(r =>
-    //{
-    //  r.Exponential(retryLimit: 5,                          // Number of retry attempts
-    //                minInterval: TimeSpan.FromSeconds(1),   // Minimum time to wait between retries
-    //                maxInterval: TimeSpan.FromMinutes(2),   // Maximum time to wait between retries
-    //                intervalDelta: TimeSpan.FromSeconds(0)  // Time added to the wait each retry
-    //  );
-    //  //r.Immediate(2);
-    //});
-    // Fallback configuration
 
   });
+
 });
 // To automatically create the tables, roles, functions, and other related database elements, a hosted service is available.
 // Specifying delete: true is only recommended for unit tests!
-services.AddPostgresMigrationHostedService(create: true, delete: isTestEnvironment);
+//services.AddPostgresMigrationHostedService(create: true, delete: isTestEnvironment);
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -99,6 +113,19 @@ app.MapPost("/burger-cooker/order", async (
   };
 
   await bus.Publish(orderedEvent);
+
+})
+//.WithName("GetWeatherForecast")
+.WithOpenApi();
+
+app.MapPost("/burger-cooker/requeue-failed-orders", async (
+  [FromServices] ILogger<Program> logger,
+  [FromServices] IBus bus
+  ) =>
+{
+  logger.LogInformation("Start requeuing failed orders");
+
+
 
 })
 //.WithName("GetWeatherForecast")

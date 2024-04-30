@@ -7,8 +7,13 @@ services:
       environment:
           DatabaseSettings__Host: "host.docker.internal"
       #     Urls: "http://0.0.0.0:3100"
-      # ports:
-      #     - "3100:3100"
+      ports:
+        - "3100:8080"
+        - "3101:8081"
+  burgercooker-mq:
+      ports:
+        - "5672:5672"   # Standard RabbitMQ port
+        - "15672:15672" # RabbitMQ Management UI
   
     #labels:
       #com.microsoft.visualstudio.debuggee.program: "dotnet"

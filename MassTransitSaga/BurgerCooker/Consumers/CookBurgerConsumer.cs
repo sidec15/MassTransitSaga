@@ -9,8 +9,6 @@ namespace MassTransitSaga.BurgerCooker.Consumers
   public class CookBurgerConsumer(ILogger<CookBurgerConsumer> logger) :
         IConsumer<CookBurger>
   {
-
-
     private readonly ILogger<CookBurgerConsumer> _logger = logger;
 
     public async Task Consume(ConsumeContext<CookBurger> context)
@@ -35,7 +33,13 @@ namespace MassTransitSaga.BurgerCooker.Consumers
       await Task.Delay(cookingSeconds * 1000);
 
       //debug_sdc
-      throw new Exception("^_^");
+      var random = new Random();
+      var randomValue = random.Next(2);
+      var isFail = randomValue == 0;
+      if(isFail)
+      {
+        throw new Exception("^_^");
+      }
 
       await context.Publish(new BurgerCookerFinishedCookingEvent()
       {

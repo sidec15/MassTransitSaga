@@ -6,3 +6,17 @@ services:
     build:
       context: .
       dockerfile: MassTransitSaga/Dockerfile
+  burgercooker-mq:
+    image: rabbitmq:management
+    container_name: BurgerCooker.RabbitMq
+    hostname: burgercooker-mq
+    volumes:
+      - ./.containers/queue/data/:/var/lib/rabbitmq
+      - ./.containers/queue/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    command: ["bash", "-c", "rabbitmq-plugins enable --offline rabbitmq_shovel rabbitmq_shovel_management && docker-entrypoint.sh rabbitmq-server"]
+
+
+
