@@ -54,7 +54,6 @@ namespace BurgerCooker.StateMachines
           {
             var logger = _context.GetService<ILogger<BurgerCookerStateMachine>>();
             logger.LogInformation("Order up for: {n}, Cook temp: {t}", context.Saga.CustomerName, context.Saga.CookTemp);
-            //throw new Exception("^_^");
 
           }).TransitionTo(Completed)
       );

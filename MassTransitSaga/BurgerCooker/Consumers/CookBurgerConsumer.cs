@@ -34,6 +34,9 @@ namespace MassTransitSaga.BurgerCooker.Consumers
 
       await Task.Delay(cookingSeconds * 1000);
 
+      //debug_sdc
+      throw new Exception("^_^");
+
       await context.Publish(new BurgerCookerFinishedCookingEvent()
       {
         CorrelationId = context.Message.CorrelationId,

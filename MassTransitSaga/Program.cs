@@ -37,7 +37,7 @@ services.AddMassTransit(configurator =>
   configurator.AddConsumers(typeof(Program).Assembly);
   configurator.AddSagaStateMachine<BurgerCookerStateMachine, BurgerCookerState>(cfg =>
   {
-
+    
   })
   .InMemoryRepository();
 
